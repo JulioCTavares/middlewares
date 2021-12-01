@@ -2,4 +2,4 @@
 
 <hr>
 
-Construindo os Middlewares para o funcionamento da API do <a href="http://https://github.com/JulioCTavares/todo-ignite">Desafio - 01</a>
+Construindo os Middlewares para o funcionamento da API do <a href="https://github.com/JulioCTavares/todo-ignite">Desafio - 01</a>
