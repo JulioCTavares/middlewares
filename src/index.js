@@ -23,6 +23,16 @@ function checksExistsUserAccount(request, response, next) {
   return next();
 }
 
+function isUUID ( uuid ) {
+  let s = "" + uuid;
+
+  s = s.match('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$');
+  if (s === null) {
+    return false;
+  }
+  return true;
+}
+
 function checksCreateTodosUserAvailability(request, response, next) {
   const { user } = request;
 
@@ -43,6 +53,12 @@ function checksTodoExists(request, response, next) {
 
   if(!user) {
     return response.status(404).json({ error: "User not found" });
+  } 
+
+  const idValid = isUUID(id)
+
+  if(!idValid) {
+    return response.status(400).json({ error: "Invalid id" });
   }
 
   const todo = users.find((user) => user.todos.id === id);
@@ -59,7 +75,17 @@ function checksTodoExists(request, response, next) {
 }
 
 function findUserById(request, response, next) {
-  // Complete aqui
+  const { id } = request.params;
+
+  const user = users.find((user) => user.id === id);
+
+  if (!user) {
+    return response.status(404).json({ error: "User not found" });
+  }
+
+  request.user = user;
+
+  return next();
 }
 
 app.post("/users", (request, response) => {
