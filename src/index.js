@@ -31,12 +31,31 @@ function checksCreateTodosUserAvailability(request, response, next) {
   } else {
     return response
       .status(403)
-      .json({ error: "User unauthorized to create a new to-do" });
+      .json({ error: "User can't create a new to-do" });
   }
 }
 
 function checksTodoExists(request, response, next) {
-  // Complete aqui
+  const {id } = request.params;
+  const { username } = request.headers;
+
+  const user = users.find((user) => user.username === username);
+
+  if(!user) {
+    return response.status(404).json({ error: "User not found" });
+  }
+
+  const todo = users.find((user) => user.todos.id === id);
+
+  if(!todo) {
+    return response.status(404).json({ error: "To-do not found" });
+  }
+
+  request.todo = todo;
+
+  request.user = user;
+
+  return next();
 }
 
 function findUserById(request, response, next) {
